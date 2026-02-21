@@ -1,6 +1,6 @@
 import re
 import time
-import sqlite3
+import psycopg
 import random
 import telebot
 from telebot import types
@@ -10,9 +10,9 @@ from telebot import types
 # =========================
 import os
 TOKEN = os.environ.get("TOKEN")
+DATABASE_URL = os.getenv("DATABASE_URL")
 OWNER_ID = 2043594987
 DB_CHANNEL_USERNAME = "@hunter_database"  # کانال دیتابیس
-DB_PATH = "picker.db"
 VERSION = "HunterBot v13 (all-in-one: spawn/hunt/upload/update/harem/inline/fav/debug + search)"
 
 bot = telebot.TeleBot(TOKEN, parse_mode=None)
@@ -81,9 +81,7 @@ DEFAULT_SPAWN_ENABLED = True
 # DB
 # =========================
 def db():
-    con = sqlite3.connect(DB_PATH)
-    con.execute("PRAGMA journal_mode=WAL;")
-    return con
+    return psycopg.connect(DATABASE_URL)
 
 def init_db():
     con = db()

@@ -1,1 +1,1 @@
-
+worker: python waifu.py

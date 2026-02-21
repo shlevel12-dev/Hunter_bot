@@ -337,8 +337,13 @@ def search_characters_in_db(query: str):
     cur.execute("""
         SELECT id, name, anime, rarity_key, event_key, image_file_id
         FROM characters
-        WHERE name LIKE ? COLLATE NOCASE
-           OR anime LIKE ? COLLATE NOCASE
+        cur.execute("""
+    SELECT id, name, anime, rarity_key, event_key, image_file_id
+    FROM characters
+    WHERE LOWER(name) LIKE LOWER(%s)
+       OR LOWER(anime) LIKE LOWER(%s)
+    ORDER BY id ASC
+""", (like, like))
         ORDER BY id ASC
     """, (like, like))
     rows = cur.fetchall()
